@@ -3,14 +3,22 @@ import random
 import string
 from kahoot import client
 from os import system, name
+import shutil
+import os
+try:
+    os.remove("backup.txt")
+except:
+    sleep(0)
 
+movie = 0
+script = 0
+usenamelist = False
 comfirm = "N"
 firstry = 1
 random_name = 'False'
-while comfirm == 'N':
+while comfirm == 'N' or comfirm == 'n':
     if firstry == 0:
         # ------------------------Clear Screen-----------------------------#
-
         print("                                                          ")
         print("                                                          ")
         print("                                                          ")
@@ -62,24 +70,45 @@ while comfirm == 'N':
     if int(AmountOfBots) > 2000:
         AmountOfBots = 2000
 
-    usenamelist = input('Would you like to use a name list? Y or N: ')
+    beemovie = input('Script Mode? Y or N : ')
+    if beemovie == 'Y' or beemovie == 'y':
+        beemovie = True
+        movie = input("What Script? 1: Bee Movie, 2: Never Gonna Give You Up, 3: Iconic Vines : " )
+
+    if movie == '1':
+        script = 'beemovie.txt'
+
+    if movie == '2':
+        script = 'RickRole.txt'
+
+    if movie == '3':
+        script = 'vines.txt'
+    if beemovie != True:
+        usenamelist = input('Would you like to use a name list? Y or N: ')
+
     if usenamelist == 'Y' or usenamelist == 'y':
         usenamelist = True
         namelist = input('What namelist would you like to use? Example: funnynames.txt: ')
 
-    if usenamelist != True:
-        input("Random String As Name? Y Or N : ")
+    if usenamelist != True and beemovie != True:
+        random_name = input("Random String As Name? Y Or N : ")
 
     if random_name == 'Y' or random_name == 'y':
         randomlength = int(input('How long will the random name be? : '))
         random_name = True
+
     if random_name == True:
         name = None
     else:
-        if usenamelist != True:
+        if usenamelist != True and beemovie != True:
             name = input("Bots names? : ")
 
+
+
     delay = 0
+
+    if beemovie == True:
+        delay = 0.5
 
     # ------------------------Clear Screen-----------------------------#
 
@@ -140,7 +169,11 @@ while comfirm == 'N':
         if usenamelist == True:
             print("Namelist = " + namelist)
         else:
-            print("Names = " + name)
+            if beemovie == True:
+                print('Movie mode = True')
+            else:
+                print("Names = " + name)
+
 
         print("                                                          ")
 
@@ -152,6 +185,8 @@ while comfirm == 'N':
     firstry = 0
 botcount = 1
 AmountOfBots = AmountOfBots + 1
+if beemovie == True:
+    shutil.copy(script, 'backup.txt')
 while botcount != AmountOfBots:
     if random_name == True:
         letters = string.ascii_lowercase
@@ -165,14 +200,26 @@ while botcount != AmountOfBots:
             name = myline
     if AmountOfBots == 2:
         botcount = ""
-    bot = client()
-    bot.join(code, name + str(botcount))
 
+    if beemovie == True:
+        with open("backup.txt", "r") as file:
+            first_line = file.readline()
+        name = first_line
+        with open('backup.txt', 'r') as fin:
+            data = fin.read().splitlines(True)
+        with open('backup.txt', 'w') as fout:
+            fout.writelines(data[1:])
+
+
+    bot = client()
+    if beemovie == True:
+        n = str(random.randint(0, 9))
+        bot.join(code, name + " " + n + n)
+    else:
+        bot.join(code, name + str(botcount))
 
     def joinHandle():
         pass
-
-
     bot.on("joined", joinHandle)
     if botcount != "":
         botcount = botcount + 1
@@ -181,10 +228,15 @@ while botcount != AmountOfBots:
     else:
         if AmountOfBots != 0:
             print(name + str(botcount))
+
     if botcount == "":
         AmountOfBots = ""
     sleep(delay)
 
+try:
+    os.remove("backup.txt")
+except:
+    sleep(0)
+
 print("done ;)")
-print(bot.name)
 
