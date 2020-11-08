@@ -2,7 +2,7 @@
 A Bot For Kahoot Made From Python
 
 
-Setup
+# Setup
 
 pip install KahootPY
 
