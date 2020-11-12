@@ -3,7 +3,7 @@ A Bot For Kahoot Made From Python
 
 # Website
 
-I've now made this exseible by any device with a website!
+I've now made this accessible by any device with a website!
 https://43675eed0940.ngrok.io
 
 (Custom domain soon)
